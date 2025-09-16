@@ -1,3 +1,16 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "user-avatar",
+      "description": "User avatar",
+      "imageUrl": "https://picsum.photos/seed/user-avatar/100/100",
+      "imageHint": "person avatar"
+    },
+    {
+      "id": "qr-code",
+      "description": "QR code for digital ID",
+      "imageUrl": "https://picsum.photos/seed/qr-code/200/200",
+      "imageHint": "qr code"
+    }
+  ]
 }
