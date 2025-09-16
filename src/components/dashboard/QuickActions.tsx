@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Share2, Bell, History } from "lucide-react";
+import { Share2, Bell, History, Lightbulb } from "lucide-react";
 import Link from "next/link";
 
 const actions = [
     { label: "View Alerts", icon: Bell, href: "/alerts" },
-    { label: "Share Location", icon: Share2, href: "#!" },
+    { label: "Safety Tips", icon: Lightbulb, href: "/safety-suggestions" },
     { label: "Travel History", icon: History, href: "#!" },
 ];
 
