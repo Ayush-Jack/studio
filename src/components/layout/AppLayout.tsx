@@ -27,9 +27,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useAuth } from "@/hooks/use-auth";
 import { BottomNavBar } from "./BottomNavBar";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const navItems = [
-  { href: "/", label: "Home", icon: Home },
+  { href: "/dashboard", label: "Home", icon: Home },
   { href: "/map", label: "Map", icon: Map },
   { href: "#!", label: "SOS", icon: Siren, isSOS: true },
   { href: "/alerts", label: "Alerts", icon: Bell },
@@ -38,13 +40,32 @@ const navItems = [
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { user, logout } = useAuth();
+  const { user, loading, logout } = useAuth();
   const isMobile = useIsMobile();
+  const router = useRouter();
   
-  const isAuthPage = pathname === '/login' || pathname === '/signup';
+  const isAuthPage = pathname === '/login' || pathname === '/signup' || pathname === '/onboarding' || pathname === '/';
 
-  if (isAuthPage) {
+  useEffect(() => {
+    if (!loading && !user && !isAuthPage) {
+      router.push('/');
+    }
+    if (!loading && user && isAuthPage) {
+      router.push('/dashboard');
+    }
+  }, [user, loading, isAuthPage, router]);
+
+
+  if (isAuthPage && !user) {
     return <>{children}</>;
+  }
+
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <ShieldAlertIcon className="w-12 h-12 text-primary animate-pulse" />
+      </div>
+    );
   }
 
 
