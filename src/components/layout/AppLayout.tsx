@@ -30,7 +30,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 const navItems = [
   { href: "/", label: "Home", icon: Home },
-  { href: "#!", label: "Map", icon: Map },
+  { href: "/map", label: "Map", icon: Map },
   { href: "#!", label: "SOS", icon: Siren, isSOS: true },
   { href: "/alerts", label: "Alerts", icon: Bell },
   { href: "/settings", label: "Settings", icon: Settings },
