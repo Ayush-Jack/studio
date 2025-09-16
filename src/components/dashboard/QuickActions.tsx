@@ -3,25 +3,28 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Share2, Bell, History } from "lucide-react";
 import Link from "next/link";
 
+const actions = [
+    { label: "View Alerts", icon: Bell, href: "/alerts" },
+    { label: "Share Location", icon: Share2, href: "#!" },
+    { label: "Travel History", icon: History, href: "#!" },
+];
+
 export function QuickActions() {
   return (
-    <Card>
-        <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col space-y-2">
-            <Button variant="outline">
-                <Share2 className="mr-2 h-4 w-4" /> Share Location
-            </Button>
-            <Button variant="outline" asChild>
-                <Link href="/alerts">
-                    <Bell className="mr-2 h-4 w-4" /> View Alerts
+    <div>
+        <h2 className="text-lg font-semibold mb-2 text-center">Quick Actions</h2>
+        <div className="grid grid-cols-3 gap-3">
+            {actions.map((action) => (
+                <Link href={action.href} key={action.label} className="block">
+                     <Card className="h-full bg-blue-50 hover:bg-blue-100 transition-colors">
+                        <CardContent className="flex flex-col items-center justify-center p-4 h-full">
+                            <action.icon className="h-6 w-6 text-primary mb-1" />
+                            <p className="text-xs text-center text-primary font-medium">{action.label}</p>
+                        </CardContent>
+                    </Card>
                 </Link>
-            </Button>
-            <Button variant="outline">
-                <History className="mr-2 h-4 w-4" /> Travel History
-            </Button>
-        </CardContent>
-    </Card>
+            ))}
+        </div>
+    </div>
   );
 }

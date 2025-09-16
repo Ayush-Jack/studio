@@ -2,14 +2,6 @@
 
 import {
   SidebarProvider,
-  Sidebar,
-  SidebarHeader,
-  SidebarContent,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-  SidebarInset,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Home, Map, Bell, Settings, User, QrCode, ShieldAlertIcon, LogOut, Siren } from "lucide-react";
 import Link from "next/link";
@@ -32,7 +24,6 @@ import { useEffect } from "react";
 const navItems = [
   { href: "/dashboard", label: "Home", icon: Home },
   { href: "/map", label: "Map", icon: Map },
-  { href: "/digital-id", label: "ID Card", icon: QrCode },
   { href: "/alerts", label: "Alerts", icon: Bell },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
@@ -49,7 +40,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     if (!loading && !user && !isAuthPage) {
       router.push('/');
     }
-    if (!loading && user && (isAuthPage || pathname === '/dashboard')) {
+    if (!loading && user && (isAuthPage || pathname === '/')) {
         if(pathname !== '/dashboard') router.push('/dashboard');
     }
   }, [user, loading, isAuthPage, router, pathname]);
@@ -57,114 +48,37 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   if (isAuthPage || loading) {
      if (loading) {
         return (
-            <div className="flex h-screen items-center justify-center">
+            <div className="flex h-screen items-center justify-center bg-background">
                 <ShieldAlertIcon className="w-12 h-12 text-primary animate-pulse" />
             </div>
         );
      }
-    return <>{children}</>;
+    return <div className="bg-background min-h-screen">{children}</div>;
   }
+
+  const Header = () => (
+     <header className="flex h-16 items-center justify-between bg-primary px-4 text-primary-foreground">
+        <div className="flex items-center gap-2">
+            <p className="font-medium">Namaste, {user?.name?.split(' ')[0]}</p>
+        </div>
+        <div className="absolute left-1/2 -translate-x-1/2">
+            <h1 className="text-xl font-bold">SafeTourism</h1>
+        </div>
+        <div>
+            {/* Can add user menu or settings icon here for larger screens */}
+        </div>
+    </header>
+  );
 
   return (
     <SidebarProvider>
-      <Sidebar>
-        <SidebarHeader>
-          <div className="flex items-center gap-2">
-            <ShieldAlertIcon className="w-8 h-8 text-primary" />
-            <h1 className="text-xl font-headline font-bold">SafeTourism</h1>
-          </div>
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarMenu>
-            {navItems.map((item) => (
-              <SidebarMenuItem key={item.label}>
-                <SidebarMenuButton
-                  asChild
-                  isActive={pathname === item.href}
-                  tooltip={item.label}
-                >
-                  <Link href={item.href}>
-                    <item.icon />
-                    <span>{item.label}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-             <SidebarMenuItem>
-                <SidebarMenuButton
-                  asChild
-                  className="mt-4 bg-destructive/20 text-destructive-foreground hover:bg-destructive/30"
-                >
-                  <Link href="#!">
-                    <Siren />
-                    <span>SOS</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarContent>
-      </Sidebar>
-      <SidebarInset>
-        <header className="flex h-14 items-center justify-end border-b bg-background px-4 lg:px-6">
-          <SidebarTrigger className="md:hidden mr-auto" />
-          {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                  <Avatar className="h-9 w-9">
-                    <AvatarImage
-                      src={user.avatarUrl}
-                      alt={user.name || "User"}
-                      data-ai-hint="person avatar"
-                    />
-                    <AvatarFallback>{user.fallback}</AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end">
-                <DropdownMenuLabel>
-                  <p>{user.name}</p>
-                  <p className="text-xs text-muted-foreground font-normal">
-                    {user.email}
-                  </p>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link href="/settings">
-                    <User className="mr-2 h-4 w-4" />
-                    <span>Profile</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                   <Link href="/digital-id">
-                    <QrCode className="mr-2 h-4 w-4" />
-                    <span>Digital ID</span>
-                   </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/settings">
-                    <Settings className="mr-2 h-4 w-4" />
-                    <span>Settings</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={logout}>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Logout</span>
-                  </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-             <Button asChild>
-                <Link href="/login">Login</Link>
-             </Button>
-          )}
-        </header>
-        <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 pb-24 md:pb-8">
-          {children}
-        </main>
-        {isMobile && <BottomNavBar navItems={navItems} />}
-      </SidebarInset>
+        <div className="flex flex-col min-h-screen bg-stone-50">
+            {!isMobile && <Header />}
+            <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 max-w-lg mx-auto w-full">
+              {children}
+            </main>
+            <BottomNavBar navItems={navItems} />
+        </div>
     </SidebarProvider>
   );
 }

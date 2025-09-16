@@ -6,6 +6,18 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import type { LucideIcon } from "lucide-react";
 import { Siren } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { useToast } from "@/hooks/use-toast";
 
 
 interface NavItem {
@@ -20,37 +32,87 @@ interface BottomNavBarProps {
 
 export function BottomNavBar({ navItems }: BottomNavBarProps) {
   const pathname = usePathname();
+  const { toast } = useToast();
+
+   const handleSos = () => {
+    console.log("SOS Alert Triggered!");
+    toast({
+      title: "SOS Alert Sent",
+      description: "Emergency services and your contacts have been notified.",
+      variant: "destructive",
+    });
+  };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 border-t bg-background/95 backdrop-blur-sm md:hidden">
-      <nav className="grid h-16 grid-cols-5 items-center justify-around">
-        {navItems.map((item) => (
+    <div className="fixed bottom-0 left-0 right-0 z-50 border-t bg-background md:hidden">
+      <div className="relative grid h-16 grid-cols-5 items-center justify-around">
+        {navItems.slice(0, 2).map((item) => (
             <Link
               key={item.label}
               href={item.href}
               className={cn(
-                "flex flex-col items-center gap-1 text-sm font-medium transition-colors",
+                "flex flex-col items-center justify-center gap-1 text-sm font-medium transition-colors h-full",
                 pathname === item.href
                   ? "text-primary"
                   : "text-muted-foreground hover:text-primary"
               )}
             >
               <item.icon className="h-6 w-6" />
-              <span className="text-xs">{item.label}</span>
+              <span className="text-xs sr-only">{item.label}</span>
             </Link>
         ))}
-      </nav>
-       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[calc(50%+8px)]">
-            <Link
-                href="#!"
-                className={cn(
-                "flex h-16 w-16 flex-col items-center justify-center rounded-full bg-destructive text-destructive-foreground shadow-lg"
-                )}
+
+        <div /> 
+
+        {navItems.slice(2).map((item) => (
+             <Link
+              key={item.label}
+              href={item.href}
+              className={cn(
+                "flex flex-col items-center justify-center gap-1 text-sm font-medium transition-colors h-full",
+                pathname === item.href
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-primary"
+              )}
             >
-                <Siren className="h-7 w-7" />
-                <span className="text-xs font-bold">SOS</span>
+              <item.icon className="h-6 w-6" />
+              <span className="text-xs sr-only">{item.label}</span>
             </Link>
+        ))}
+
+         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[calc(50%+8px)]">
+            <AlertDialog>
+                <AlertDialogTrigger asChild>
+                    <button
+                        className={cn(
+                        "flex h-16 w-16 flex-col items-center justify-center rounded-full bg-destructive text-destructive-foreground shadow-lg"
+                        )}
+                    >
+                        <Siren className="h-7 w-7" />
+                        <span className="text-xs font-bold">SOS</span>
+                    </button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Confirm SOS Alert?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This will immediately send your location to emergency services and
+                      your emergency contacts. Are you sure you want to proceed?
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={handleSos}
+                      className="bg-destructive hover:bg-destructive/90"
+                    >
+                      Confirm SOS
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
         </div>
+      </div>
     </div>
   );
 }

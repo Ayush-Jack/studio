@@ -29,18 +29,15 @@ export function SosButton() {
   };
 
   return (
-    <div className="fixed bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 z-50">
+    <div className="text-center my-6">
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button
             variant="destructive"
-            className="rounded-full w-24 h-24 shadow-2xl animate-pulse"
+            className="rounded-full w-32 h-32 shadow-2xl"
             aria-label="SOS Button"
           >
-            <div className="flex flex-col items-center">
-              <span className="font-bold text-xl">SOS</span>
-              <span className="text-xs">Emergency</span>
-            </div>
+            <span className="font-bold text-4xl">SOS</span>
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
