@@ -45,7 +45,7 @@ export function TouristIdCard() {
 
         <div className="flex justify-center items-center my-4">
             <Image
-                src="https://picsum.photos/seed/qr-code/200/200"
+                src="https://storage.googleapis.com/studio-ux-for-ds-assets/qr-code-68a7f932.png"
                 width={160}
                 height={160}
                 alt="QR Code"
