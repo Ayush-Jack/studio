@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Home, Map, Bell, Settings, User, QrCode, ShieldAlertIcon, LogOut, Siren } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
@@ -28,7 +28,6 @@ import { useAuth } from "@/hooks/use-auth";
 import { BottomNavBar } from "./BottomNavBar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 
 const navItems = [
   { href: "/dashboard", label: "Home", icon: Home },
@@ -50,24 +49,21 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     if (!loading && !user && !isAuthPage) {
       router.push('/');
     }
-    if (!loading && user && isAuthPage) {
-      router.push('/dashboard');
+    if (!loading && user && (isAuthPage || pathname === '/dashboard')) {
+        if(pathname !== '/dashboard') router.push('/dashboard');
     }
-  }, [user, loading, isAuthPage, router]);
+  }, [user, loading, isAuthPage, router, pathname]);
 
-
-  if (isAuthPage && !user) {
+  if (isAuthPage || loading) {
+     if (loading) {
+        return (
+            <div className="flex h-screen items-center justify-center">
+                <ShieldAlertIcon className="w-12 h-12 text-primary animate-pulse" />
+            </div>
+        );
+     }
     return <>{children}</>;
   }
-
-  if (loading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <ShieldAlertIcon className="w-12 h-12 text-primary animate-pulse" />
-      </div>
-    );
-  }
-
 
   return (
     <SidebarProvider>

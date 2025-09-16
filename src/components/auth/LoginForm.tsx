@@ -47,7 +47,7 @@ export function LoginForm() {
         title: "Logged In Successfully",
         description: "Redirecting you to the dashboard...",
       });
-      router.push("/");
+      router.push("/dashboard");
     } catch (error: any) {
       toast({
         variant: "destructive",

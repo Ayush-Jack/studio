@@ -47,9 +47,9 @@ export function SignupForm() {
       await signUp(data.email, data.password, data.fullName);
       toast({
         title: "Account Created Successfully",
-        description: "You can now log in with your credentials.",
+        description: "Redirecting you to the dashboard...",
       });
-      router.push("/login");
+      router.push("/dashboard");
     } catch (error: any) {
       toast({
         variant: "destructive",
