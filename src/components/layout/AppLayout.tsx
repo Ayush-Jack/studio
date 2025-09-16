@@ -32,7 +32,7 @@ import { useEffect } from "react";
 const navItems = [
   { href: "/dashboard", label: "Home", icon: Home },
   { href: "/map", label: "Map", icon: Map },
-  { href: "#!", label: "SOS", icon: Siren, isSOS: true },
+  { href: "/digital-id", label: "ID Card", icon: QrCode },
   { href: "/alerts", label: "Alerts", icon: Bell },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
@@ -90,6 +90,17 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}
+             <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  className="mt-4 bg-destructive/20 text-destructive-foreground hover:bg-destructive/30"
+                >
+                  <Link href="#!">
+                    <Siren />
+                    <span>SOS</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
           </SidebarMenu>
         </SidebarContent>
       </Sidebar>
@@ -124,9 +135,11 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     <span>Profile</span>
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <QrCode className="mr-2 h-4 w-4" />
-                  <span>Digital ID</span>
+                <DropdownMenuItem asChild>
+                   <Link href="/digital-id">
+                    <QrCode className="mr-2 h-4 w-4" />
+                    <span>Digital ID</span>
+                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/settings">

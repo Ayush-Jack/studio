@@ -1,10 +1,9 @@
 import { SosButton } from '@/components/dashboard/SosButton';
-import { TouristIdCard } from '@/components/dashboard/TouristIdCard';
+import { SafetySuggestions } from '@/components/dashboard/SafetySuggestions';
 import { TripSummaryCard } from '@/components/dashboard/TripSummaryCard';
 import { SafetyScoreIndicator } from '@/components/dashboard/SafetyScoreIndicator';
 import { LiveLocationStatus } from '@/components/dashboard/LiveLocationStatus';
 import { QuickActions } from '@/components/dashboard/QuickActions';
-import { Separator } from '@/components/ui/separator';
 import { ShieldAlertIcon } from 'lucide-react';
 
 export default function DashboardPage() {
@@ -18,22 +17,18 @@ export default function DashboardPage() {
         <p className="text-muted-foreground">Your Safety, Our Priority</p>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
         {/* Left column */}
-        <div className="md:col-span-1 space-y-6">
+        <div className="space-y-6">
           <SafetyScoreIndicator />
           <TripSummaryCard />
-        </div>
-
-        {/* Center column */}
-        <div className="md:col-span-1 space-y-6">
-          <TouristIdCard />
+          <LiveLocationStatus />
+          <QuickActions />
         </div>
 
         {/* Right column */}
-        <div className="md:col-span-1 space-y-6">
-          <LiveLocationStatus />
-          <QuickActions />
+        <div className="space-y-6">
+          <SafetySuggestions />
         </div>
       </div>
       
