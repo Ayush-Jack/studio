@@ -32,7 +32,7 @@ const navItems = [
   { href: "/", label: "Home", icon: Home },
   { href: "#!", label: "Map", icon: Map },
   { href: "#!", label: "SOS", icon: Siren, isSOS: true },
-  { href: "#!", label: "Alerts", icon: Bell },
+  { href: "/alerts", label: "Alerts", icon: Bell },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
