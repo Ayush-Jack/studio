@@ -1,11 +1,10 @@
-
 "use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import type { LucideIcon } from "lucide-react";
-import { Siren } from "lucide-react";
+import { Siren, Loader2 } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,7 +17,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-
+import { sendSosAlertAction } from "@/lib/actions";
+import { useState } from "react";
 
 interface NavItem {
   href: string;
@@ -33,14 +33,45 @@ interface BottomNavBarProps {
 export function BottomNavBar({ navItems }: BottomNavBarProps) {
   const pathname = usePathname();
   const { toast } = useToast();
+  const [isSosLoading, setIsSosLoading] = useState(false);
+  const [isSosDisabled, setIsSosDisabled] = useState(false);
 
-   const handleSos = () => {
-    console.log("SOS Alert Triggered!");
-    toast({
-      title: "SOS Alert Sent",
-      description: "Emergency services and your contacts have been notified.",
-      variant: "destructive",
-    });
+  const handleSos = async () => {
+    setIsSosLoading(true);
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        const result = await sendSosAlertAction({ latitude, longitude });
+
+        if (result.success) {
+          toast({
+            title: "🚨 SOS Activated!",
+            description: "Your ID and location have been shared with authorities.",
+            variant: "destructive",
+            duration: 10000,
+          });
+          setIsSosDisabled(true);
+          setTimeout(() => setIsSosDisabled(false), 15000); // Disable for 15 seconds
+        } else {
+          toast({
+            title: "SOS Failed",
+            description: result.error || "Could not send alert. Please try again.",
+            variant: "destructive",
+          });
+        }
+        setIsSosLoading(false);
+      },
+      (error) => {
+        toast({
+          title: "Location Error",
+          description: "Unable to retrieve your location. Please grant permission and try again.",
+          variant: "destructive",
+        });
+        setIsSosLoading(false);
+      },
+      { enableHighAccuracy: true }
+    );
   };
 
   return (
@@ -62,7 +93,7 @@ export function BottomNavBar({ navItems }: BottomNavBarProps) {
             </Link>
         ))}
 
-        <div /> 
+        <div />
 
         {navItems.slice(2).map((item) => (
              <Link
@@ -84,28 +115,36 @@ export function BottomNavBar({ navItems }: BottomNavBarProps) {
             <AlertDialog>
                 <AlertDialogTrigger asChild>
                     <button
+                        disabled={isSosDisabled || isSosLoading}
                         className={cn(
-                        "flex h-16 w-16 flex-col items-center justify-center rounded-full bg-destructive text-destructive-foreground shadow-lg"
+                          "flex h-16 w-16 flex-col items-center justify-center rounded-full bg-destructive text-destructive-foreground shadow-lg transition-transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed",
                         )}
                     >
-                        <Siren className="h-7 w-7" />
-                        <span className="text-xs font-bold">SOS</span>
+                        {isSosLoading ? (
+                          <Loader2 className="h-7 w-7 animate-spin" />
+                        ) : (
+                          <>
+                            <Siren className="h-7 w-7" />
+                            <span className="text-xs font-bold">SOS</span>
+                          </>
+                        )}
                     </button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
                     <AlertDialogTitle>Confirm SOS Alert?</AlertDialogTitle>
                     <AlertDialogDescription>
-                      This will immediately send your location to emergency services and
-                      your emergency contacts. Are you sure you want to proceed?
+                      This will immediately share your ID and live location with emergency services and your registered contacts. Use only in a genuine emergency.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction
                       onClick={handleSos}
+                      disabled={isSosLoading}
                       className="bg-destructive hover:bg-destructive/90"
                     >
+                       {isSosLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                       Confirm SOS
                     </AlertDialogAction>
                   </AlertDialogFooter>
