@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,7 +11,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { ShieldAlert } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
 export function SosButton() {
@@ -31,17 +29,17 @@ export function SosButton() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 z-50">
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button
             variant="destructive"
-            className="rounded-full w-20 h-20 shadow-2xl animate-pulse"
+            className="rounded-full w-24 h-24 shadow-2xl animate-pulse"
             aria-label="SOS Button"
           >
             <div className="flex flex-col items-center">
-              <ShieldAlert className="w-8 h-8" />
-              <span className="font-bold text-lg">SOS</span>
+              <span className="font-bold text-xl">SOS</span>
+              <span className="text-xs">Emergency</span>
             </div>
           </Button>
         </AlertDialogTrigger>
