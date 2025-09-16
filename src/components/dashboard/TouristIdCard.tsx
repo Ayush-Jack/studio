@@ -45,7 +45,7 @@ export function TouristIdCard() {
 
         <div className="flex justify-center items-center my-4">
             <Image
-                src="https://storage.googleapis.com/studio-ux-for-ds-assets/qr-code-68a7f932.png"
+                src="https://placehold.co/160x160/000000/FFFFFF?text=QR"
                 width={160}
                 height={160}
                 alt="QR Code"
