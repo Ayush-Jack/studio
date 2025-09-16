@@ -85,7 +85,7 @@ export function MapComponent() {
                 title="Safe Zone"
                 icon={{
                   path: google.maps.SymbolPath.CIRCLE,
-                  scale: 200, // Represents a radius
+                  scale: 100, // Represents a radius
                   fillColor: "green",
                   fillOpacity: 0.2,
                   strokeColor: "green",
@@ -111,7 +111,7 @@ export function MapComponent() {
                 title="Risk Zone"
                 icon={{
                   path: google.maps.SymbolPath.CIRCLE,
-                  scale: 250, // Represents a radius
+                  scale: 125, // Represents a radius
                   fillColor: "red",
                   fillOpacity: 0.2,
                   strokeColor: "red",

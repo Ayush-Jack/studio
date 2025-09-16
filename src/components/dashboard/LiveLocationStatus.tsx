@@ -61,7 +61,7 @@ export function LiveLocationStatus() {
                 position={safeZonePosition}
                 icon={{
                   path: google.maps.SymbolPath.CIRCLE,
-                  scale: 150,
+                  scale: 75,
                   fillColor: "green",
                   fillOpacity: 0.2,
                   strokeColor: "green",
