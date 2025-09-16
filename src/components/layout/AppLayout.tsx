@@ -11,7 +11,7 @@ import {
   SidebarInset,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Home, Map, Bell, Settings, User, QrCode, ShieldAlertIcon, LogOut } from "lucide-react";
+import { Home, Map, Bell, Settings, User, QrCode, ShieldAlertIcon, LogOut, Siren } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "../ui/button";
@@ -25,10 +25,13 @@ import {
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useAuth } from "@/hooks/use-auth";
+import { BottomNavBar } from "./BottomNavBar";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const navItems = [
   { href: "/", label: "Home", icon: Home },
   { href: "#!", label: "Map", icon: Map },
+  { href: "#!", label: "SOS", icon: Siren, isSOS: true },
   { href: "#!", label: "Alerts", icon: Bell },
   { href: "#!", label: "Settings", icon: Settings },
 ];
@@ -36,6 +39,7 @@ const navItems = [
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { user, logout } = useAuth();
+  const isMobile = useIsMobile();
   
   const isAuthPage = pathname === '/login' || pathname === '/signup';
 
@@ -122,9 +126,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
              </Button>
           )}
         </header>
-        <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 pb-24 md:pb-8">
           {children}
         </main>
+        {isMobile && <BottomNavBar navItems={navItems} />}
       </SidebarInset>
     </SidebarProvider>
   );
