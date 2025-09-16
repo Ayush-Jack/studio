@@ -18,7 +18,7 @@ const safeZonePosition = { lat: 26.9124, lng: 75.7873 };
 
 export function LiveLocationStatus() {
   const { isLoaded } = useJsApiLoader({
-    id: 'google-map-snippet-script',
+    id: 'google-map-script',
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""
   })
 
