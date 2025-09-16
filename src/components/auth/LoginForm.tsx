@@ -15,6 +15,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email." }),
@@ -26,6 +28,9 @@ type LoginFormValues = z.infer<typeof formSchema>;
 export function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { login } = useAuth();
+  const router = useRouter();
+
   const methods = useForm<LoginFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -34,19 +39,24 @@ export function LoginForm() {
     },
   });
 
-  const onSubmit: SubmitHandler<LoginFormValues> = (data) => {
+  const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     setIsLoading(true);
-    console.log(data);
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      await login(data.email, data.password);
       toast({
         title: "Logged In Successfully",
         description: "Redirecting you to the dashboard...",
       });
-      // In a real app, you'd redirect the user here.
-      // For now, we'll just show a toast.
-    }, 1500);
+      router.push("/");
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Login Failed",
+        description: error.message || "An unexpected error occurred.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

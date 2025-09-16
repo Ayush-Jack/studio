@@ -11,7 +11,7 @@ import {
   SidebarInset,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Home, Map, Bell, Settings, User, QrCode, ShieldAlertIcon } from "lucide-react";
+import { Home, Map, Bell, Settings, User, QrCode, ShieldAlertIcon, LogOut } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "../ui/button";
@@ -35,7 +35,7 @@ const navItems = [
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   
   const isAuthPage = pathname === '/login' || pathname === '/signup';
 
@@ -82,7 +82,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                   <Avatar className="h-9 w-9">
                     <AvatarImage
                       src={user.avatarUrl}
-                      alt={user.name}
+                      alt={user.name || "User"}
                       data-ai-hint="person avatar"
                     />
                     <AvatarFallback>{user.fallback}</AvatarFallback>
@@ -110,7 +110,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                   <span>Settings</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Logout</DropdownMenuItem>
+                <DropdownMenuItem onClick={logout}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Logout</span>
+                  </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (

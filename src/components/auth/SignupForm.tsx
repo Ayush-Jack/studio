@@ -15,6 +15,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   fullName: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -27,6 +29,9 @@ type SignupFormValues = z.infer<typeof formSchema>;
 export function SignupForm() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { signUp } = useAuth();
+  const router = useRouter();
+
   const methods = useForm<SignupFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -36,18 +41,24 @@ export function SignupForm() {
     },
   });
 
-  const onSubmit: SubmitHandler<SignupFormValues> = (data) => {
+  const onSubmit: SubmitHandler<SignupFormValues> = async (data) => {
     setIsLoading(true);
-    console.log(data);
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      await signUp(data.email, data.password, data.fullName);
       toast({
         title: "Account Created Successfully",
         description: "You can now log in with your credentials.",
       });
-      // In a real app, you'd redirect to the login page or dashboard.
-    }, 1500);
+      router.push("/login");
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Sign Up Failed",
+        description: error.message || "An unexpected error occurred.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
