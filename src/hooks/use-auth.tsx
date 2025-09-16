@@ -36,7 +36,7 @@ const formatUser = (user: User): AuthUser => {
         uid: user.uid,
         email: user.email,
         name: user.displayName,
-        avatarUrl: user.photoURL || `https://picsum.photos/seed/${user.uid}/100/100`,
+        avatarUrl: `https://picsum.photos/seed/boy-avatar/100/100`,
         fallback: user.displayName?.substring(0, 2).toUpperCase() || '..',
     };
 };
