@@ -41,7 +41,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         <SidebarHeader>
           <div className="flex items-center gap-2">
             <ShieldAlertIcon className="w-8 h-8 text-primary" />
-            <h1 className="text-xl font-headline font-bold">TourAssist</h1>
+            <h1 className="text-xl font-headline font-bold">SafeTourism</h1>
           </div>
         </SidebarHeader>
         <SidebarContent>
@@ -75,7 +75,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     alt="User"
                     data-ai-hint="person avatar"
                   />
-                  <AvatarFallback>TA</AvatarFallback>
+                  <AvatarFallback>ST</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>

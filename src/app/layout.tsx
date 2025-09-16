@@ -4,8 +4,8 @@ import { AppLayout } from '@/components/layout/AppLayout';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'TourAssist',
-  description: 'Smart Tourist Safety App',
+  title: 'SafeTourism',
+  description: 'Your Safety, Our Priority',
 };
 
 export default function RootLayout({
